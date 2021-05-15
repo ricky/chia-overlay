@@ -1,0 +1,17 @@
+[Unit]
+After=network.target network-online.target
+Description=chia %I
+StartLimitIntervalSec=0
+Wants=network-online.target
+
+[Service]
+EnvironmentFile=/etc/conf.d/chia
+ExecStartPre=/usr/bin/chia init
+ExecStart=/usr/bin/chia start %i
+ExecStop=/usr/bin/chia stop all -d
+Restart=always
+RestartSec=5
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,7 @@
+# Run one of: all|node|harvester|farmer|farmer-no-wallet|
+#             farmer-only|timelord|timelord-only|timelord-launcher-only
+#             wallet|wallet-only|introducer|simulator
+CHIA_SERVICES=farmer
+
+# Run as this user
+CHIA_USER=chia

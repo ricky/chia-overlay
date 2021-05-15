@@ -1,0 +1,24 @@
+#!/sbin/openrc-run
+
+depend() {
+    need net
+}
+
+start() {
+    ebegin "Starting Chia Services"
+    runuser -l ${CHIA_USER} -c "/usr/bin/chia init"
+    runuser -l ${CHIA_USER} -c "/usr/bin/chia start ${CHIA_SERVICES}"
+    eend $?
+}
+
+restart() {
+    ebegin "Restarting Chia Services"
+    runuser -l ${CHIA_USER} -c "/usr/bin/chia start -r ${CHIA_SERVICES}"
+    eend $?
+}
+
+stop() {
+    ebegin "Stopping chia services"
+    runuser -l ${CHIA_USER} -c "/usr/bin/chia stop all -d"
+    eend $?
+}

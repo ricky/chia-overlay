@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <upstream>
+    <bugs-to>https://github.com/Chia-Network/chia-blockchain/issues</bugs-to>
+    <changelog>https://github.com/Chia-Network/chia-blockchain/blob/main/CHANGELOG.md</changelog>
+    <doc>https://github.com/Chia-Network/chia-blockchain/wiki</doc>
+    <remote-id type="pypi">chia-blockchain</remote-id>
+    <remote-id type="github">Chia-Network/chia-blockchain</remote-id>
+  </upstream>
+  <maintainer type="person">
+    <email>gentoo@ricky.dev</email>
+    <name>Ricky Rivera</name>
+  </maintainer>
+</pkgmetadata>

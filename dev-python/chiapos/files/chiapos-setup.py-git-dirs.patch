@@ -1,0 +1,18 @@
+cxxopts,gulrak, and pybind11 were checked out during src_unpack to prevent
+sandbox violations
+diff --git a/setup.py b/setup.py
+index d302525..c5435ad 100644
+--- a/setup.py
++++ b/setup.py
+@@ -39,6 +39,10 @@ class CMakeBuild(build_ext):
+
+     def build_extension(self, ext):
+         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
++        depsdir = os.path.abspath(os.environ['WORKDIR'] + "/_deps")
+         cmake_args = [
+             "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + str(extdir),
++            "-DFETCHCONTENT_SOURCE_DIR_CXXOPTS=" + str(depsdir) + "/cxxopts",
++            "-DFETCHCONTENT_SOURCE_DIR_GULRAK=" + str(depsdir) + "/gulrak",
++            "-DFETCHCONTENT_SOURCE_DIR_PYBIND11-SRC=" + str(depsdir) + "/pybind11",
+             "-DPYTHON_EXECUTABLE=" + sys.executable,
+         ]

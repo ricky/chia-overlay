@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer type="person">
+    <email>gentoo@ricky.dev</email>
+    <name>Ricky Rivera</name>
+  </maintainer>
+  <upstream>
+    <remote-id type="pypi">maturin</remote-id>
+    <remote-id type="github">pyo3/maturin</remote-id>
+  </upstream>
+</pkgmetadata>
