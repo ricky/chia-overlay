@@ -28,6 +28,10 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-setup.py-git-dirs.patch
 )
 
+export CXXOPTS_SRC_DIR=${WORKDIR}/_deps/cxxopts
+export GULRAK_SRC_DIR=${WORKDIR}/_deps/gulrak
+export PYBIND11_SRC_DIR=${WORKDIR}/_deps/pybind11
+
 src_unpack() {
 	default_src_unpack
 
@@ -35,21 +39,21 @@ src_unpack() {
 		git-r3_src_unpack
 	fi
 
-	mkdir -p _deps/cxxopts || die
+	mkdir -p ${CXXOPTS_SRC_DIR} || die
 	EGIT_REPO_URI="https://github.com/jarro2783/cxxopts.git"
 	EGIT_TAG="v2.2.1"
-	EGIT_CHECKOUT_DIR=${WORKDIR}/_deps/cxxopts
+	EGIT_CHECKOUT_DIR=${CXXOPTS_SRC_DIR}
 	git-r3_src_unpack
 
-	mkdir -p _deps/gulrak || die
+	mkdir -p ${GULRAK_SRC_DIR} || die
 	EGIT_REPO_URI="https://github.com/gulrak/filesystem.git"
 	EGIT_TAG="v1.5.4"
-	EGIT_CHECKOUT_DIR=${WORKDIR}/_deps/gulrak
+	EGIT_CHECKOUT_DIR=${GULRAK_SRC_DIR}
 	git-r3_src_unpack
 
-	mkdir -p _deps/pybind11 || die
+	mkdir -p ${PYBIND11_SRC_DIR} || die
 	EGIT_REPO_URI="https://github.com/pybind/pybind11.git"
 	EGIT_TAG="v2.6.2"
-	EGIT_CHECKOUT_DIR=${WORKDIR}/_deps/pybind11
+	EGIT_CHECKOUT_DIR=${PYBIND11_SRC_DIR}
 	git-r3_src_unpack
 }
