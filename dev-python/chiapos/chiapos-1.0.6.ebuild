@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="7"
@@ -47,13 +47,13 @@ src_unpack() {
 
 	mkdir -p ${GULRAK_SRC_DIR} || die
 	EGIT_REPO_URI="https://github.com/gulrak/filesystem.git"
-	EGIT_TAG="v1.5.4"
+	EGIT_TAG="v1.5.6"
 	EGIT_CHECKOUT_DIR=${GULRAK_SRC_DIR}
 	git-r3_src_unpack
 
 	mkdir -p ${PYBIND11_SRC_DIR} || die
 	EGIT_REPO_URI="https://github.com/pybind/pybind11.git"
-	EGIT_TAG="v2.6.2"
+	EGIT_TAG="v2.7.1"
 	EGIT_CHECKOUT_DIR=${PYBIND11_SRC_DIR}
 	git-r3_src_unpack
 }

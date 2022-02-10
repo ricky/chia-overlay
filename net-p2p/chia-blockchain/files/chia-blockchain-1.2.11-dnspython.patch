@@ -1,0 +1,12 @@
+Stick w/ system dnspython due to file conflicts
+diff --git a/setup.py b/setup.py
+--- a/setup.py       2022-02-07 15:24:28.017439405 -0600
++++ b/setup.py    2022-02-07 15:24:51.404107268 -0600
+@@ -26,6 +26,6 @@
+     "sortedcontainers",  # For maintaining sorted mempools
+     "websockets",  # For use in wallet RPC and electron UI
+     "click",  # For the CLI
+-    "dnspythonchia",  # Query DNS seeds
++    "dnspython",  # Query DNS seeds
+     "watchdog",  # Filesystem event watching - watches keyring.yaml
+ ]

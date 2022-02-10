@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -37,19 +37,27 @@ RDEPEND="
 	dev-python/clvm[${PYTHON_USEDEP}]
 	dev-python/clvm_rs[${PYTHON_USEDEP}]
 	dev-python/clvm_tools[${PYTHON_USEDEP}]
+	dev-python/colorama[${PYTHON_USEDEP}]
 	dev-python/colorlog[${PYTHON_USEDEP}]
 	dev-python/concurrent-log-handler[${PYTHON_USEDEP}]
 	dev-python/cryptography[${PYTHON_USEDEP}]
 	dev-python/dnspython[${PYTHON_USEDEP}]
+	dev-python/fasteners[${PYTHON_USEDEP}]
 	dev-python/keyring[${PYTHON_USEDEP}]
 	dev-python/keyrings-cryptfile[${PYTHON_USEDEP}]
+	dev-python/multidict[${PYTHON_USEDEP}]
 	dev-python/pyyaml[${PYTHON_USEDEP}]
 	dev-python/setproctitle[${PYTHON_USEDEP}]
 	dev-python/sortedcontainers[${PYTHON_USEDEP}]
+	dev-python/watchdog[${PYTHON_USEDEP}]
 	dev-python/websockets[${PYTHON_USEDEP}]
 	systemd? ( sys-apps/systemd )
-	upnp? ( >=dev-python/miniupnpc-2.1[${PYTHON_USEDEP}] )
+	upnp? ( >=dev-python/miniupnpc-2.2[${PYTHON_USEDEP}] )
 "
+
+PATCHES=(
+	"${FILESDIR}"/${P}-dnspython.patch
+)
 
 distutils_enable_tests pytest
 

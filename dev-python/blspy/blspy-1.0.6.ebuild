@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="7"
@@ -30,10 +30,11 @@ RDEPEND="
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-setup.py-git-dirs.patch
-	"${FILESDIR}"/${PN}-privatekey-init.patch
+	"${FILESDIR}"/${P}-static-members.patch
 )
 
 export CMAKE_LIBRARY_ARCHITECTURE=${CTARGET:-${CHOST}}
+export SODIUM_SRC_DIR=${WORKDIR}/_deps/libsodium-cmake
 export PYBIND11_SRC_DIR=${WORKDIR}/_deps/pybind11
 export RELIC_SRC_DIR=${WORKDIR}/_deps/relic-src
 
@@ -44,16 +45,24 @@ src_unpack() {
 		git-r3_src_unpack
 	fi
 
+	mkdir -p ${SODIUM_SRC_DIR} || die
+	EGIT_REPO_URI="https://github.com/AmineKhaldi/libsodium-cmake.git"
+	EGIT_COMMIT="f73a3fe1afdc4e37ac5fe0ddd401bf521f6bba65"
+	EGIT_TAG=""
+	EGIT_CHECKOUT_DIR=${SODIUM_SRC_DIR}
+	git-r3_src_unpack
+
 	mkdir -p ${PYBIND11_SRC_DIR} || die
 	EGIT_REPO_URI="https://github.com/pybind/pybind11.git"
+	EGIT_COMMIT=""
 	EGIT_TAG="v2.6.2"
 	EGIT_CHECKOUT_DIR=${PYBIND11_SRC_DIR}
 	git-r3_src_unpack
 
 	mkdir -p ${RELIC_SRC_DIR} || die
-	EGIT_REPO_URI="https://github.com/relic-toolkit/relic.git"
-	EGIT_COMMIT="1885ae3b681c423c72b65ce1fe70910142cf941c"
-	EGIT_TAG=""
+	EGIT_REPO_URI="https://github.com/Chia-Network/relic.git"
+	EGIT_COMMIT=""
+	EGIT_TAG="1d98e5abf3ca5b14fd729bd5bcced88ea70ecfd7"
 	EGIT_CHECKOUT_DIR=${RELIC_SRC_DIR}
 	git-r3_src_unpack
 }

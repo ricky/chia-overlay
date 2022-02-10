@@ -3,11 +3,12 @@ diff --git a/setup.py b/setup.py
 index 1b0d7b2..f110d2f 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -41,6 +41,9 @@ class CMakeBuild(build_ext):
+@@ -41,4 +41,8 @@ class CMakeBuild(build_ext):
          extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
          cmake_args = [
              "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + extdir,
 +            "-DCMAKE_LIBRARY_ARCHITECTURE=" + str(os.environ["CMAKE_LIBRARY_ARCHITECTURE"]),
++            "-DFETCHCONTENT_SOURCE_DIR_SODIUM=" + str(os.environ["SODIUM_SRC_DIR"]),
 +            "-DFETCHCONTENT_SOURCE_DIR_PYBIND11=" + str(os.environ["PYBIND11_SRC_DIR"]),
 +            "-DFETCHCONTENT_SOURCE_DIR_RELIC=" + str(os.environ["RELIC_SRC_DIR"]),
              "-DPYTHON_EXECUTABLE=" + sys.executable,
