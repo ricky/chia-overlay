@@ -21,7 +21,7 @@ HOMEPAGE="https://chia.net/"
 LICENSE="Apache-2.0"
 SLOT="0"
 
-IUSE="systemd upnp"
+IUSE="chiadns systemd upnp"
 
 RDEPEND="
 	acct-group/chia
@@ -41,7 +41,6 @@ RDEPEND="
 	dev-python/colorlog[${PYTHON_USEDEP}]
 	dev-python/concurrent-log-handler[${PYTHON_USEDEP}]
 	dev-python/cryptography[${PYTHON_USEDEP}]
-	dev-python/dnspython[${PYTHON_USEDEP}]
 	dev-python/fasteners[${PYTHON_USEDEP}]
 	dev-python/keyring[${PYTHON_USEDEP}]
 	dev-python/keyrings-cryptfile[${PYTHON_USEDEP}]
@@ -51,13 +50,11 @@ RDEPEND="
 	dev-python/sortedcontainers[${PYTHON_USEDEP}]
 	dev-python/watchdog[${PYTHON_USEDEP}]
 	dev-python/websockets[${PYTHON_USEDEP}]
+	!chiadns? ( dev-python/dnspython[${PYTHON_USEDEP}] )
+	chiadns? ( dev-python/dnspythonchia[${PYTHON_USEDEP}] )
 	systemd? ( sys-apps/systemd )
 	upnp? ( >=dev-python/miniupnpc-2.2[${PYTHON_USEDEP}] )
 "
-
-PATCHES=(
-	"${FILESDIR}"/${P}-dnspython.patch
-)
 
 distutils_enable_tests pytest
 
@@ -67,6 +64,7 @@ src_prepare() {
 	# unpin deps
 	sed -i -e "s:>=.*':':" setup.py || die
 	sed -i -r 's/"(.*)==.*"/"\1"/g' setup.py || die
+	use chiadns || eapply "${FILESDIR}"/${P}-dnspython.patch
 	distutils-r1_src_prepare
 }
 

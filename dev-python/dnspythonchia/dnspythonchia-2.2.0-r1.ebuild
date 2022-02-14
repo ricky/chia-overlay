@@ -17,6 +17,7 @@ KEYWORDS="~amd64"
 IUSE="examples"
 
 RDEPEND="
+	!!dev-python/dnspython
 	dev-python/cryptography[${PYTHON_USEDEP}]
 	<dev-python/idna-4.0[${PYTHON_USEDEP}]"
 BDEPEND="

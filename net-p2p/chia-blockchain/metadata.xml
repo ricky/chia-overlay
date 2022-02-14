@@ -12,4 +12,7 @@
     <email>gentoo@ricky.dev</email>
     <name>Ricky Rivera</name>
   </maintainer>
+  <use>
+    <flag name="chiadns">Use the Chia fork of dnspython (dev-python/dnspythonchia)</flag>
+  </use>
 </pkgmetadata>
