@@ -83,7 +83,7 @@ winapi-x86_64-pc-windows-gnu-0.4.0
 wyz-0.4.0
 "
 
-PYTHON_COMPAT=( python3_{7..9} )
+PYTHON_COMPAT=( python3_{8..10} )
 inherit python-r1 flag-o-matic cargo
 
 DESCRIPTION="Rust implementation of the Chia Lisp Virtual Machine"
@@ -128,7 +128,8 @@ src_configure() {
 src_install() {
 	install_from_wheels() {
 		# Create wheel with maturin
-		maturin build --release \
+		maturin build -m wheel/Cargo.toml \
+			--release \
 			--no-sdist \
 			--manylinux "off" \
 			--interpreter ${EPYTHON}

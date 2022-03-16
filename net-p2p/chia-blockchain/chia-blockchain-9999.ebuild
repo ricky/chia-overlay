@@ -1,9 +1,9 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{7..9} )
+PYTHON_COMPAT=( python3_{8..10} )
 
 inherit distutils-r1 systemd
 
@@ -21,11 +21,12 @@ HOMEPAGE="https://chia.net/"
 LICENSE="Apache-2.0"
 SLOT="0"
 
-IUSE="systemd upnp"
+IUSE="chiadns systemd upnp"
 
 RDEPEND="
 	acct-group/chia
 	acct-user/chia
+	dev-python/aiofiles[${PYTHON_USEDEP}]
 	dev-python/aiohttp[${PYTHON_USEDEP}]
 	dev-python/aiosqlite[${PYTHON_USEDEP}]
 	dev-python/bitstring[${PYTHON_USEDEP}]
@@ -37,26 +38,38 @@ RDEPEND="
 	dev-python/clvm[${PYTHON_USEDEP}]
 	dev-python/clvm_rs[${PYTHON_USEDEP}]
 	dev-python/clvm_tools[${PYTHON_USEDEP}]
+	dev-python/colorama[${PYTHON_USEDEP}]
 	dev-python/colorlog[${PYTHON_USEDEP}]
 	dev-python/concurrent-log-handler[${PYTHON_USEDEP}]
 	dev-python/cryptography[${PYTHON_USEDEP}]
-	dev-python/dnspython[${PYTHON_USEDEP}]
+	dev-python/dnslib[${PYTHON_USEDEP}]
+	dev-python/fasteners[${PYTHON_USEDEP}]
 	dev-python/keyring[${PYTHON_USEDEP}]
 	dev-python/keyrings-cryptfile[${PYTHON_USEDEP}]
+	dev-python/multidict[${PYTHON_USEDEP}]
+	dev-python/packaging[${PYTHON_USEDEP}]
 	dev-python/pyyaml[${PYTHON_USEDEP}]
 	dev-python/setproctitle[${PYTHON_USEDEP}]
 	dev-python/sortedcontainers[${PYTHON_USEDEP}]
+	dev-python/typing-extensions[${PYTHON_USEDEP}]
+	dev-python/watchdog[${PYTHON_USEDEP}]
 	dev-python/websockets[${PYTHON_USEDEP}]
+	dev-python/zstd[${PYTHON_USEDEP}]
+	!chiadns? ( dev-python/dnspython[${PYTHON_USEDEP}] )
+	chiadns? ( dev-python/dnspythonchia[${PYTHON_USEDEP}] )
 	systemd? ( sys-apps/systemd )
-	upnp? ( >=dev-python/miniupnpc-2.1[${PYTHON_USEDEP}] )
+	upnp? ( >=dev-python/miniupnpc-2.2[${PYTHON_USEDEP}] )
 "
+
+distutils_enable_tests pytest
 
 src_prepare() {
 	eapply_user
 
 	# unpin deps
 	sed -i -e "s:>=.*':':" setup.py || die
-	sed -i -r 's/"(.*)==.*"/"\1"/g' setup.py || die
+	sed -i -r 's/"([a-zA-Z0-9._\-]+)==.*"/"\1"/g' setup.py || die
+	use chiadns || eapply "${FILESDIR}"/${P}-dnspython.patch
 	distutils-r1_src_prepare
 }
 
@@ -67,14 +80,15 @@ src_install() {
 		systemd_newuserunit "${FILESDIR}/chia.service" "chia@.service"
 	else
 		newinitd "${FILESDIR}"/chia.initd chia
-		newconfd "${FILESDIR}"/chia.confd chia
 	fi
+
+	newconfd "${FILESDIR}"/chia.confd chia
 }
 
 pkg_postinst() {
 	elog "Before running the service(s), initialize the chia configuration by running"
-	elog "the `chia init` command as the user who will run the service. If you have not"
-	elog "yet created keys, you should also run `chia keys generate`."
+	elog "the 'chia init' command as the user who will run the service. If you have not"
+	elog "yet created keys, you should also run 'chia keys generate'."
 	elog
 
 	if use systemd; then
@@ -83,12 +97,12 @@ pkg_postinst() {
 		elog "$ systemctl --user start chia@<SERVICE>"
 		elog
 		elog "Where <SERVICE> is one of:"
-		elog "  all,node,harvester,farmer,farmer-no-wallet,farmer-only,timelord,"
-		elog "  timelord-only,timelord-launcher-only,wallet,wallet-only,introducer,simulator"
+		elog "  all,node,harvester,farmer,farmer-no-wallet,farmer-only,timelord,timelord-only,"
+		elog "  timelord-launcher-only,wallet,wallet-only,introducer,simulator"
 	else
-		elog "Start the chia services with `/etc/init.d/chia start`."
+		elog "Start the chia services with '/etc/init.d/chia start'."
 		elog
 		elog "You can configure which service(s) to run and which user to run as"
-		elog "in `/etc/conf.d/chia`. By default, it runs the farmer services a the 'chia' user."
+		elog "in '/etc/conf.d/chia'. By default, it runs the farmer services a the 'chia' user."
 	fi
 }

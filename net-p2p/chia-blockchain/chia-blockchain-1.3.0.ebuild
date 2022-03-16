@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{7..9} )
+PYTHON_COMPAT=( python3_{8..10} )
 
 inherit distutils-r1 systemd
 
@@ -26,6 +26,7 @@ IUSE="chiadns systemd upnp"
 RDEPEND="
 	acct-group/chia
 	acct-user/chia
+	dev-python/aiofiles[${PYTHON_USEDEP}]
 	dev-python/aiohttp[${PYTHON_USEDEP}]
 	dev-python/aiosqlite[${PYTHON_USEDEP}]
 	dev-python/bitstring[${PYTHON_USEDEP}]
@@ -41,15 +42,19 @@ RDEPEND="
 	dev-python/colorlog[${PYTHON_USEDEP}]
 	dev-python/concurrent-log-handler[${PYTHON_USEDEP}]
 	dev-python/cryptography[${PYTHON_USEDEP}]
+	dev-python/dnslib[${PYTHON_USEDEP}]
 	dev-python/fasteners[${PYTHON_USEDEP}]
 	dev-python/keyring[${PYTHON_USEDEP}]
 	dev-python/keyrings-cryptfile[${PYTHON_USEDEP}]
 	dev-python/multidict[${PYTHON_USEDEP}]
+	dev-python/packaging[${PYTHON_USEDEP}]
 	dev-python/pyyaml[${PYTHON_USEDEP}]
 	dev-python/setproctitle[${PYTHON_USEDEP}]
 	dev-python/sortedcontainers[${PYTHON_USEDEP}]
+	dev-python/typing-extensions[${PYTHON_USEDEP}]
 	dev-python/watchdog[${PYTHON_USEDEP}]
 	dev-python/websockets[${PYTHON_USEDEP}]
+	dev-python/zstd[${PYTHON_USEDEP}]
 	!chiadns? ( dev-python/dnspython[${PYTHON_USEDEP}] )
 	chiadns? ( dev-python/dnspythonchia[${PYTHON_USEDEP}] )
 	systemd? ( sys-apps/systemd )
@@ -63,7 +68,7 @@ src_prepare() {
 
 	# unpin deps
 	sed -i -e "s:>=.*':':" setup.py || die
-	sed -i -r 's/"(.*)==.*"/"\1"/g' setup.py || die
+	sed -i -r 's/"([a-zA-Z0-9._\-]+)==.*"/"\1"/g' setup.py || die
 	use chiadns || eapply "${FILESDIR}"/${P}-dnspython.patch
 	distutils-r1_src_prepare
 }
